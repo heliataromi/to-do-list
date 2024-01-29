@@ -67,6 +67,13 @@ class TodoList:
         self.save_tasks()
         print('To-do list cleared successfully.')
 
+    def get_task(self, title):
+        for task in self.tasks:
+            if task.title == title:
+                print("{:<15} {:<10} {:<10}".format('Title', 'Priority', 'Done'))
+                print("{:<15} {:<10} {:<10}".format(task.title, task.priority, task.done))
+
+
 def main():
     todo_list = TodoList()
 
@@ -82,6 +89,8 @@ def main():
             todo_list.list_tasks()
         elif command[1] == 'clear':
             todo_list.clear_list()
+        elif command[1] == 'search':
+            todo_list.get_task(command[2])
         else:
             print('Invalid command.')
     except IndexError:

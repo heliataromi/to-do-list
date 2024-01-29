@@ -81,6 +81,15 @@ Index  Title           Priority   Done
         with open('todo.csv', 'r') as file:
             self.assertEqual(file.read().strip(), '')
 
+    def test_get_task(self):
+        self.run_command(self.todo_list_executable, 'create "Test Task 1"')
+        self.run_command(self.todo_list_executable, 'create "Test Task 2"')
+
+        result = self.run_command(self.todo_list_executable, 'search "Test Task 1"')
+        expected_output = '''Title           Priority   Done      
+Test Task 1     Medium     0'''
+        self.assertEqual(expected_output, result.stdout.strip())
+
 
 if __name__ == '__main__':
     unittest.main()
