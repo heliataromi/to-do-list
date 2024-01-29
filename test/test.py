@@ -27,19 +27,20 @@ class TestTodoListTerminal(unittest.TestCase):
         result = self.run_command(self.todo_list_executable, 'create "Test Task 1"')
         self.assertEqual('Task "Test Task 1" created successfully.', result.stdout.strip())
         with open('todo.csv', 'r') as file:
-            self.assertEqual(file.readlines()[0].strip(), 'Test Task 1,Medium,0')
+            self.assertEqual('Test Task 1,Medium,0', file.readlines()[0].strip())
 
         result = self.run_command(self.todo_list_executable, 'create "Test Task 2" Low 1')
         self.assertEqual('Task "Test Task 2" created successfully.', result.stdout.strip())
         with open('todo.csv', 'r') as file:
-            self.assertEqual(file.readlines()[1].strip(), 'Test Task 2,Low,1')
+            self.assertEqual('Test Task 2,Low,1', file.readlines()[1].strip())
 
     def test_update_task(self):
         self.run_command(self.todo_list_executable, 'create "Test Task"')
+
         result = self.run_command(self.todo_list_executable, 'update "Test Task" done 1')
         self.assertEqual('Task "Test Task" updated successfully.', result.stdout.strip())
         with open('todo.csv', 'r') as file:
-            self.assertEqual(file.readlines()[0].strip(), 'Test Task,Medium,1')
+            self.assertEqual('Test Task,Medium,1', file.readlines()[0].strip())
 
     def test_list_tasks(self):
         result = self.run_command(self.todo_list_executable, 'list')
@@ -65,12 +66,12 @@ Index  Title           Priority   Done
         result = self.run_command(self.todo_list_executable, 'delete "Test Task 1"')
         self.assertEqual('Task "Test Task 1" deleted successfully.', result.stdout.strip())
         with open('todo.csv', 'r') as file:
-            self.assertEqual(file.readlines()[0].strip(), 'Test Task 2,Medium,0')
+            self.assertEqual('Test Task 2,Medium,0', file.readlines()[0].strip())
 
         result = self.run_command(self.todo_list_executable, 'delete "Test Task 1"')
         self.assertEqual('Invalid title.', result.stdout.strip())
         with open('todo.csv', 'r') as file:
-            self.assertEqual(file.readlines()[0].strip(), 'Test Task 2,Medium,0')
+            self.assertEqual('Test Task 2,Medium,0', file.readlines()[0].strip())
 
     def test_clear_list(self):
         self.run_command(self.todo_list_executable, 'create "Test Task 1"')
@@ -79,7 +80,7 @@ Index  Title           Priority   Done
         result = self.run_command(self.todo_list_executable, 'clear')
         self.assertEqual('To-do list cleared successfully.', result.stdout.strip())
         with open('todo.csv', 'r') as file:
-            self.assertEqual(file.read().strip(), '')
+            self.assertEqual('', file.read().strip())
 
     def test_get_task(self):
         self.run_command(self.todo_list_executable, 'create "Test Task 1"')
