@@ -31,14 +31,15 @@ class TodoList:
         self.save_tasks()
         print(f'Task "{title}" created successfully.')
 
-    def update_task(self, index, field, edit):
-        index = int(index) - 1
-        if 0 <= index < len(self.tasks):
-            if field == 'done':
-                edit = bool(int(edit))
-            setattr(self.tasks[index], field, edit)
-            self.save_tasks()
-            print(f'Task at index {index + 1} updated successfully.')
+    def update_task(self, title, field, edit):
+        if field == 'done':
+            edit = bool(int(edit))
+        for task in self.tasks:
+            if task.title == title:
+                setattr(task, field, edit)
+                self.save_tasks()
+                print(f'Task "{title}" updated successfully.')
+                break
         else:
             print('Invalid index.')
 
@@ -51,14 +52,15 @@ class TodoList:
             for index, task in enumerate(self.tasks):
                 print("{:<6} {:<15} {:<10} {:<10}".format(index + 1, task.title, task.priority, task.done))
 
-    def delete_task(self, index):
-        index = int(index) - 1
-        if 0 <= index < len(self.tasks):
-            deleted_task = self.tasks.pop(index)
-            self.save_tasks()
-            print(f'Task "{deleted_task.title}" deleted successfully.')
+    def delete_task(self, title):
+        for task in self.tasks:
+            if task.title == title:
+                self.tasks.remove(task)
+                self.save_tasks()
+                print(f'Task "{title}" deleted successfully.')
+                break
         else:
-            print('Invalid index.')
+            print('Invalid title.')
 
     def clear_list(self):
         self.tasks = []

@@ -36,8 +36,8 @@ class TestTodoListTerminal(unittest.TestCase):
 
     def test_update_task(self):
         self.run_command(self.todo_list_executable, 'create "Test Task"')
-        result = self.run_command(self.todo_list_executable, 'update 1 done 1')
-        self.assertEqual('Task at index 1 updated successfully.', result.stdout.strip())
+        result = self.run_command(self.todo_list_executable, 'update "Test Task" done 1')
+        self.assertEqual('Task "Test Task" updated successfully.', result.stdout.strip())
         with open('todo.csv', 'r') as file:
             self.assertEqual(file.readlines()[0].strip(), 'Test Task,Medium,1')
 
@@ -48,7 +48,7 @@ class TestTodoListTerminal(unittest.TestCase):
         self.run_command(self.todo_list_executable, 'create "Test Task 1"')
         self.run_command(self.todo_list_executable, 'create "Test Task 2"')
         self.run_command(self.todo_list_executable, 'create "Test Task 3" High 1')
-        self.run_command(self.todo_list_executable, 'update 1 priority Low')
+        self.run_command(self.todo_list_executable, 'update "Test Task 1" priority Low')
 
         result = self.run_command(self.todo_list_executable, 'list')
         expected_output = '''Task List:
@@ -62,13 +62,13 @@ Index  Title           Priority   Done
         self.run_command(self.todo_list_executable, 'create "Test Task 1"')
         self.run_command(self.todo_list_executable, 'create "Test Task 2"')
 
-        result = self.run_command(self.todo_list_executable, 'delete 1')
+        result = self.run_command(self.todo_list_executable, 'delete "Test Task 1"')
         self.assertEqual('Task "Test Task 1" deleted successfully.', result.stdout.strip())
         with open('todo.csv', 'r') as file:
             self.assertEqual(file.readlines()[0].strip(), 'Test Task 2,Medium,0')
 
-        result = self.run_command(self.todo_list_executable, 'delete 2')
-        self.assertEqual('Invalid index.', result.stdout.strip())
+        result = self.run_command(self.todo_list_executable, 'delete "Test Task 1"')
+        self.assertEqual('Invalid title.', result.stdout.strip())
         with open('todo.csv', 'r') as file:
             self.assertEqual(file.readlines()[0].strip(), 'Test Task 2,Medium,0')
 
