@@ -3,12 +3,14 @@ import os
 import sys
 
 
+class Task:
+    def __init__(self, title, priority='Medium', done=False):
+        self.title = title
+        self.priority = priority
+        self.done = done
+
+
 class TodoList:
-    class _Task:
-        def __init__(self, title, priority='Medium', done=False):
-            self.title = title
-            self.priority = priority
-            self.done = done
 
     def __init__(self):
         self.file_name = 'todo.csv'
@@ -19,7 +21,7 @@ class TodoList:
         if os.path.exists(self.file_name):
             with open(self.file_name, 'r') as file:
                 reader = csv.reader(file)
-                self.tasks = [self._Task(row[0], row[1], bool(int(row[2]))) for row in reader]
+                self.tasks = [Task(row[0], row[1], bool(int(row[2]))) for row in reader]
 
     def save_tasks(self):
         with open(self.file_name, 'w', newline='') as file:
@@ -27,7 +29,7 @@ class TodoList:
             writer.writerows([(task.title, task.priority, int(task.done)) for task in self.tasks])
 
     def create_task(self, title, priority='Medium', done=False):
-        self.tasks.append(self._Task(title, priority, done))
+        self.tasks.append(Task(title, priority, done))
         self.save_tasks()
         print(f'Task "{title}" created successfully.')
 
